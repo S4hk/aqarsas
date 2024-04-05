@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import useAqarsasStats from "./hooks/aqarsas-stats-hook";
+import ValuesChart from "./components/chart/ValuesChart";
 
 interface AppProps {}
 
@@ -18,6 +19,7 @@ const App: React.FC<AppProps> = () => {
           {console.log({ stats })}
           <p>Number of Deals: {stats?.number_of_deals?.length}</p>
           <p>Value of Deals: {stats?.value_of_deals?.length}</p>
+          <ValuesChart />
         </div>
       )}
     </div>
