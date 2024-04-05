@@ -1,31 +1,27 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import React from "react";
 import "./App.css";
+import useAqarsasStats from "./hooks/aqarsas-stats-hook";
 
-function App() {
-  const [count, setCount] = useState(0);
+interface AppProps {}
+
+const App: React.FC<AppProps> = () => {
+  const { stats, error, isFetching } = useAqarsasStats(new Date("2022-03-05"));
 
   return (
-    <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      {isFetching ? (
+        <p>Loading data...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <div>
+          {console.log({ stats })}
+          <p>Number of Deals: {stats?.number_of_deals?.length}</p>
+          <p>Value of Deals: {stats?.value_of_deals?.length}</p>
+        </div>
+      )}
+    </div>
   );
-}
+};
 
 export default App;
