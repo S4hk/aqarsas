@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BarChart,
   Bar,
@@ -9,7 +8,6 @@ import {
   Legend,
 } from "recharts";
 import { ProcessedData } from "../../types";
-
 
 export default function ValuesChart({
   processedData,

@@ -15,7 +15,6 @@ const App: React.FC<AppProps> = () => {
         <p>Error: {error}</p>
       ) : (
         <div>
-          {console.log(stats)}
 
           {!!stats?.number_of_deals && (
             <ValuesChart processedData={[stats?.number_of_deals]} />
