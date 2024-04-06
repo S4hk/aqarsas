@@ -30,8 +30,8 @@ export default function ValuesChart({
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="residential" stackId="a" fill="#1e1350" />
-        <Bar dataKey="commercial" stackId="a" fill="#0046ff" />
+        <Bar dataKey="residential" name="سكني" stackId="a" fill="#1e1350" />
+        <Bar dataKey="commercial" name="تجاري" stackId="a" fill="#0046ff" />
       </BarChart>
     </>
   );
