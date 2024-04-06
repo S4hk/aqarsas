@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { API_KEY, API_URL } from "../config";
 import { formatDateForAqarsas } from "../utils/formatDate";
 import { DataItem } from "../types";
+import { processData } from "../utils/processsData";
 
 interface Stats {
   number_of_deals?: DataItem[];
@@ -58,8 +59,35 @@ const useAqarsasStats = (
       fetchData("value_of_deals");
     }
   }, []);
+  // console.log({
+  //   stats: {
+  //     number_of_deals: processData(
+  //       formatDateForAqarsas(endDate),
+  //       stats?.number_of_deals || []
+  //     ),
+  //     value_of_deals: processData(
+  //       formatDateForAqarsas(endDate),
+  //       stats?.value_of_deals || []
+  //     ),
+  //   },
+  // });
 
-  return { stats, error, isFetching };
+  return {
+    stats: {
+      number_of_deals: stats?.number_of_deals
+        ? processData(
+            formatDateForAqarsas(endDate),
+            stats?.number_of_deals || []
+          )
+        : null,
+      // value_of_deals: processData(
+      //   formatDateForAqarsas(endDate),
+      //   stats?.value_of_deals || []
+      // ),
+    },
+    error,
+    isFetching,
+  };
 };
 
 export default useAqarsasStats;
