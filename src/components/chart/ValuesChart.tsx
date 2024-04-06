@@ -17,13 +17,16 @@ export default function ValuesChart({
   return (
     <>
       <BarChart
-        width={500}
+        width={700}
         height={300}
         data={processedData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
+        <XAxis dataKey="date" 
+        //interval={6}//we can change it to 0 to view all dates
+        
+        />
         <YAxis />
         <Tooltip />
         <Legend />

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { API_KEY, API_URL } from "../config";
-import { formatDateForAqarsas } from "../utils/formatDate";
 import { DataItem, ProcessedData } from "../types";
 import { processData } from "../utils/processsData";
+import { fetchBasedOnDateList } from "../utils/generateDateList";
 
 interface Stats {
   number_of_deals?: ProcessedData;
@@ -13,13 +13,16 @@ interface StatsState {
   value_of_deals?: DataItem[];
 }
 const useAqarsasStats = (
-  endDate: Date
+  endDate: string
 ): { stats: Stats | null; error: string | null; isFetching: boolean } => {
   const [stats, setStats] = useState<StatsState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchData = async (stat_type: string) => {
+  const fetchData = async (
+    date: string,
+    stat_type: string = "number_of_deals"
+  ) => {
     setIsFetching(true);
 
     try {
@@ -27,10 +30,10 @@ const useAqarsasStats = (
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          stat_type,
+          stat_type: stat_type,
           calendar: "gregorian",
-          start_date: formatDateForAqarsas(endDate),
-          end_date: formatDateForAqarsas(endDate),
+          start_date: date,
+          end_date: date,
           key: API_KEY,
         }),
       });
@@ -44,7 +47,10 @@ const useAqarsasStats = (
       if (data.Error_code === 0) {
         setStats((prevStats) => ({
           ...prevStats,
-          [stat_type]: data.Stats_list,
+          [stat_type]: {
+            ...(prevStats ? prevStats[stat_type] : []),
+            [date]: processData(date, data.Stats_list), //using key value pairs to stop duplication
+          },
         }));
       } else {
         setError(data.Error_msg);
@@ -58,7 +64,8 @@ const useAqarsasStats = (
 
   useEffect(() => {
     if (!isFetching) {
-      fetchData("number_of_deals");
+      fetchBasedOnDateList(endDate, fetchData);
+
       // fetchData("value_of_deals"); //TODO activate this if we need the deals values
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,13 +73,12 @@ const useAqarsasStats = (
 
   return {
     stats: {
-      number_of_deals: processData(
-        formatDateForAqarsas(endDate),
-        stats?.number_of_deals || []
-      ),
+      number_of_deals: stats?.number_of_deals
+        ? Object.values(stats?.number_of_deals)
+        : [],
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
-      //   formatDateForAqarsas(endDate),
+      //   endDate,
       //   stats?.value_of_deals || []
       // ),
     },
