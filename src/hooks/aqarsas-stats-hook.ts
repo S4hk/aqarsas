@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { API_KEY, API_URL } from "../config";
 import { formatDateForAqarsas } from "../utils/formatDate";
+import { DataItem } from "../types";
 
 interface Stats {
-  number_of_deals?: number;
-  value_of_deals?: number;
+  number_of_deals?: DataItem[];
+  value_of_deals?: DataItem[];
 }
 
 const useAqarsasStats = (
@@ -18,17 +19,13 @@ const useAqarsasStats = (
     setIsFetching(true);
 
     try {
-      const startDate = formatDateForAqarsas(
-        new Date(endDate.getFullYear(), endDate.getMonth(), 2)
-      );
-
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           stat_type,
           calendar: "gregorian",
-          start_date: startDate,
+          start_date: formatDateForAqarsas(endDate),
           end_date: formatDateForAqarsas(endDate),
           key: API_KEY,
         }),
