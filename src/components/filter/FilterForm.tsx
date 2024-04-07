@@ -1,11 +1,32 @@
-function FilterForm() {
+import { useState } from "react";
+import { SelectedData } from "../../types";
+
+type Props = { setSelectedData: (formData: SelectedData) => void };
+
+function FilterForm({ setSelectedData }: Props) {
+  const [formData, setFormData] = useState({ date: "2022-01-05" });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSelectedData(formData);
+  };
+  const handleChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
-    <form className=" items-center justify-center flex gap-2 w-full">
+    <form
+      className=" items-center justify-center flex gap-2 w-full"
+      onSubmit={handleSubmit}
+    >
       <div className="flex gap-2 items-center">
         <label htmlFor="area" className=" mb-2  font-medium text-gray-900 ">
           المنطقة:
         </label>
         <select
+          onChange={handleChange}
+          name="state"
           id="area"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         >
@@ -43,6 +64,9 @@ function FilterForm() {
           </div>
           <input
             type="date"
+            name="date"
+            defaultValue={"2022-01-05"}
+            onChange={handleChange}
             max="2022-01-05"
             min="2009-09-01"
             className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
@@ -51,7 +75,7 @@ function FilterForm() {
         </div>
       </div>
       <button
-        type="button"
+        type="submit"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 "
       >
         تغير

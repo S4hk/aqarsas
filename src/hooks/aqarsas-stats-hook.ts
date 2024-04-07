@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { API_KEY, API_URL } from "../config";
-import { DataItem, ProcessedData } from "../types";
+import { DataItem, ProcessedData, SelectedData } from "../types";
 import { processData } from "../utils/processsData";
 import { fetchBasedOnDateList } from "../utils/generateDateList";
 
@@ -13,7 +13,7 @@ interface StatsState {
   value_of_deals?: DataItem[];
 }
 const useAqarsasStats = (
-  endDate: string
+  selectedData: SelectedData
 ): { stats: Stats | null; error: string | null; isFetching: boolean } => {
   const [stats, setStats] = useState<StatsState | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -31,10 +31,11 @@ const useAqarsasStats = (
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           stat_type: stat_type,
-          calendar: "gregorian",
+          // calendar: "gregorian",
           start_date: date,
           end_date: date,
           key: API_KEY,
+          state: Number(selectedData.state),
         }),
       });
 
@@ -64,12 +65,13 @@ const useAqarsasStats = (
 
   useEffect(() => {
     if (!isFetching) {
-      fetchBasedOnDateList(endDate, fetchData);
+      setStats({});
+      fetchBasedOnDateList(selectedData.date, fetchData);
 
       // fetchData("value_of_deals"); //TODO activate this if we need the deals values
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedData]);
 
   return {
     stats: {

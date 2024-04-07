@@ -9,3 +9,8 @@ export interface ProcessedData {
   residential: number;
   commercial: number;
 }
+
+export interface SelectedData {
+  date: string;
+  state?: number;
+}
