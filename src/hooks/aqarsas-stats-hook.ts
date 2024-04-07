@@ -5,12 +5,10 @@ import { processData } from "../utils/processsData";
 import { fetchBasedOnDateList } from "../utils/generateDateList";
 
 interface Stats {
-  number_of_deals?: ProcessedData;
-  value_of_deals?: ProcessedData;
+  [key: string]: ProcessedData[];
 }
 interface StatsState {
-  number_of_deals?: DataItem[];
-  value_of_deals?: DataItem[];
+  [key: string]: DataItem[];
 }
 const useAqarsasStats = (
   selectedData: SelectedData
@@ -72,12 +70,13 @@ const useAqarsasStats = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData]);
+  console.log({ stats });
 
   return {
     stats: {
       number_of_deals: stats?.number_of_deals
-        ? Object.values(stats?.number_of_deals)
-        : [],
+        ? (Object.values(stats?.number_of_deals) as ProcessedData[]) // conversion not mistaken 
+        : ([] as ProcessedData[]),
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
       //   endDate,
