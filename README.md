@@ -1,4 +1,4 @@
-# Interview Task README
+# Interview Task
 
 ## Overview
 This repository contains an interview task that focuses on building a single-page widget 
