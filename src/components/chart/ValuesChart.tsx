@@ -28,7 +28,14 @@ export default function ValuesChart({
           dataKey="date"
           //interval={6}//we can change it to 0 to view all dates
         />
-        <YAxis />
+        <YAxis
+          tickFormatter={(value) =>
+            new Intl.NumberFormat("ar-EG", {
+              notation: "compact",
+              compactDisplay: "short",
+            }).format(value)
+          }
+        />
         <Tooltip />
         <Legend />
         <Bar dataKey="residential" name="سكني" stackId="a" fill="#1e1350" />
