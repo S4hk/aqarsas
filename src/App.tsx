@@ -28,7 +28,7 @@ const App: React.FC = () => {
   });
   const { stats, error, isFetching } = useAqarsasStats(selectedData);
   return (
-    <div className="container mx-auto p-4  flex justify-center   flex-col items-center ">
+    <div className="container mx-auto p-4 font-tajawal  flex justify-center   flex-col items-center ">
       <h1 className="text-center fw-bold mb-12 text-4xl">رسم بياني تفاعلي</h1>
 
       <div className="flex  gap-5 mb-6 flex-col md:flex-row">
