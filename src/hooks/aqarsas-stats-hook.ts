@@ -70,12 +70,11 @@ const useAqarsasStats = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData]);
-  console.log({ stats });
 
   return {
     stats: {
       number_of_deals: stats?.number_of_deals
-        ? (Object.values(stats?.number_of_deals) as ProcessedData[]) // conversion not mistaken 
+        ? (Object.values(stats?.number_of_deals) as ProcessedData[]) // conversion not mistaken
         : ([] as ProcessedData[]),
       //TODO activate this if we need the deals values
       // value_of_deals: processData(

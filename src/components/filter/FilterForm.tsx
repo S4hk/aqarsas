@@ -20,7 +20,7 @@ function FilterForm({ setSelectedData }: Props) {
   return (
     <>
       <form
-        className=" items-center justify-center flex gap-2 border p-4 rounded-md shadow-md  "
+        className=" md:items-center items-stretch justify-center flex gap-2 border p-4 rounded-md shadow-md   flex-col md:flex-row"
         onSubmit={handleSubmit}
       >
         <div className="flex gap-2 items-center">
@@ -31,7 +31,7 @@ function FilterForm({ setSelectedData }: Props) {
             onChange={handleChange}
             name="state"
             id="area"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 flex-grow-1 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
             <option>الكل</option>
             <option value="0">الرياض</option>

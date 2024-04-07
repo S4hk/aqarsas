@@ -31,7 +31,7 @@ const App: React.FC = () => {
     <div className="container mx-auto p-4  flex justify-center   flex-col items-center ">
       <h1 className="text-center fw-bold mb-12 text-4xl">رسم بياني تفاعلي</h1>
 
-      <div className="flex  gap-5 mb-6 ">
+      <div className="flex  gap-5 mb-6 flex-col md:flex-row">
         <div>
           <strong>خيارات البحث: </strong>
           {Number(selectedData?.state) + 1
@@ -54,12 +54,10 @@ const App: React.FC = () => {
       ) : error ? (
         <p>Error: {error}</p>
       ) : (
-        <div>
-          <div dir="ltr">
-            {!!stats?.number_of_deals && (
-              <ValuesChart processedData={stats?.number_of_deals || []} />
-            )}
-          </div>
+        <div className="flex lg:w-1/2  w-full" dir="ltr">
+          {!!stats?.number_of_deals && (
+            <ValuesChart processedData={stats?.number_of_deals || []} />
+          )}
         </div>
       )}
       <div className="mt-4">
