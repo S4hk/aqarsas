@@ -3,6 +3,7 @@ import { API_KEY, API_URL } from "../config";
 import { DataItem, ProcessedData, SelectedData } from "../types";
 import { processData } from "../utils/processsData";
 import { fetchBasedOnDateList } from "../utils/generateDateList";
+import { sortByDate } from "../utils/sortByDate";
 
 interface Stats {
   [key: string]: ProcessedData[];
@@ -71,11 +72,13 @@ const useAqarsasStats = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData]);
 
+
+// this sort util is used because Object.values and entries don't preserve order
+// i tried new Map but wasn't efficint  
+  const sortedData = sortByDate(Object.values(stats?.number_of_deals || {}));
   return {
     stats: {
-      number_of_deals: stats?.number_of_deals
-        ? (Object.values(stats?.number_of_deals) as ProcessedData[]) // conversion not mistaken
-        : ([] as ProcessedData[]),
+      number_of_deals: sortedData,
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
       //   endDate,
