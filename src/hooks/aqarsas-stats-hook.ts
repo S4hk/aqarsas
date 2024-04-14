@@ -3,6 +3,7 @@ import { API_KEY, API_URL } from "../config";
 import { ProcessedData, SelectedData } from "../types";
 import { processData } from "../utils/processsData";
 import { fetchBasedOnDateList } from "../utils/generateDateList";
+import { sortByDate } from "../utils/sortByDate";
 
 interface Stats {
   [key: string]: ProcessedData[];
@@ -74,7 +75,10 @@ const useAqarsasStats = (
 
   return {
     stats: {
-      number_of_deals: [...(stats?.number_of_deals?.values() || [])],
+      number_of_deals: sortByDate([
+        // to make years sorted
+        ...(stats?.number_of_deals?.values() || []),
+      ]),
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
       //   endDate,
