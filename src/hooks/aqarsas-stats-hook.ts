@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { API_KEY, API_URL } from "../config";
-import { DataItem, ProcessedData, SelectedData } from "../types";
+import { ProcessedData, SelectedData } from "../types";
 import { processData } from "../utils/processsData";
 import { fetchBasedOnDateList } from "../utils/generateDateList";
-import { sortByDate } from "../utils/sortByDate";
 
 interface Stats {
   [key: string]: ProcessedData[];
 }
 interface StatsState {
-  [key: string]: DataItem[];
+  [key: string]: Map<string, ProcessedData>;
 }
 const useAqarsasStats = (
   selectedData: SelectedData
@@ -45,13 +44,14 @@ const useAqarsasStats = (
       const data = await response.json();
 
       if (data.Error_code === 0) {
-        setStats((prevStats) => ({
-          ...prevStats,
-          [stat_type]: {
-            ...(prevStats ? prevStats[stat_type] : []),
-            [date]: processData(date, data.Stats_list), //using key value pairs to stop duplication
-          },
-        }));
+        setStats((prevStats) => {
+          const newStats = new Map(prevStats ? prevStats[stat_type] : []);
+          newStats.set(date, processData(date, data.Stats_list));
+          return {
+            ...prevStats,
+            [stat_type]: newStats,
+          };
+        });
       } else {
         setError(data.Error_msg);
       }
@@ -72,13 +72,9 @@ const useAqarsasStats = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData]);
 
-
-// this sort util is used because Object.values and entries don't preserve order
-// i tried new Map but wasn't efficint  
-  const sortedData = sortByDate(Object.values(stats?.number_of_deals || {}));
   return {
     stats: {
-      number_of_deals: sortedData,
+      number_of_deals: [...(stats?.number_of_deals?.values() || [])],
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
       //   endDate,
