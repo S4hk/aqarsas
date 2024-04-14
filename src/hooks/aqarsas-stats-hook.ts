@@ -76,7 +76,7 @@ const useAqarsasStats = (
   return {
     stats: {
       number_of_deals: sortByDate([
-        // to make years sorted
+        // to make years sorted because Object.values(), Map.values() give wrong sorting
         ...(stats?.number_of_deals?.values() || []),
       ]),
       //TODO activate this if we need the deals values
