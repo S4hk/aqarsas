@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { API_KEY, API_URL } from "../config";
 import { ProcessedData, SelectedData } from "../types";
 import { processData } from "../utils/processsData";
@@ -72,13 +72,12 @@ const useAqarsasStats = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData]);
-
+  const sortedDeals = useMemo(() => {
+    return sortByDate([...(stats?.number_of_deals?.values() || [])]); // to stotp re sorting
+  }, [stats]);
   return {
     stats: {
-      number_of_deals: sortByDate([
-        // to make years sorted because Object.values(), Map.values() give wrong sorting
-        ...(stats?.number_of_deals?.values() || []),
-      ]),
+      number_of_deals: sortedDeals,
       //TODO activate this if we need the deals values
       // value_of_deals: processData(
       //   endDate,
